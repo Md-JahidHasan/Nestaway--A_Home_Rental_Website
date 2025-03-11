@@ -5,6 +5,7 @@ import Heading from '../../components/Shared/Heading'
 import { useQuery } from '@tanstack/react-query'
 import { axiosSecure } from '../../hooks/useAxiosSecure'
 import { useParams } from 'react-router-dom'
+import LoadingSpinner from '../../components/Shared/LoadingSpinner'
 
 // single room object (Fake Data)
 // const room = {
@@ -45,7 +46,7 @@ const RoomDetails = () => {
   }
 })
 
-  
+  if (isLoading) return <LoadingSpinner />
   
   return (
     <Container>
