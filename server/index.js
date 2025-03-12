@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken')
 
 const port = process.env.PORT || 8000
 
+
 // middleware
 const corsOptions = {
   origin: ['http://localhost:5173', 'http://localhost:5174'],
@@ -36,7 +37,7 @@ const verifyToken = async (req, res, next) => {
   })
 }
 
-const uri1 = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@main.mq0mae1.mongodb.net/?retryWrites=true&w=majority&appName=Main`
+// const uri1 = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@main.mq0mae1.mongodb.net/?retryWrites=true&w=majority&appName=Main`
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ptptzcl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 const client = new MongoClient(uri, {
   serverApi: {
@@ -48,6 +49,11 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+
+    const roomsCollection = client.db('NestAway').collection('rooms');
+
+
+
     // auth related api
     app.post('/jwt', async (req, res) => {
       const user = req.body
@@ -78,11 +84,34 @@ async function run() {
       }
     })
 
+
+    // get all rooms from database
+    app.get('/rooms', async (req, res) => {
+      let query = {}
+      const category = req.query.category;
+      if (category && category !== 'null') {
+        query = { category:category }
+      }
+      const result = await roomsCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    // get room details from database
+    app.get('/room/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      
+      const query = { _id: new ObjectId(id) }
+      const result = await roomsCollection.findOne(query);
+      res.send(result);
+    })
+
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 })
     console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
+      'Pinged your deployment. You successfully connected to MongoDwB!'
     )
+    
   } finally {
     // Ensures that the client will close when you finish/error
   }

@@ -3,9 +3,10 @@ import { Helmet } from 'react-helmet-async'
 import RoomReservation from '../../components/RoomDetails/RoomReservation'
 import Heading from '../../components/Shared/Heading'
 import { useQuery } from '@tanstack/react-query'
-import { axiosSecure } from '../../hooks/useAxiosSecure'
+// import { axiosSecure } from '../../hooks/useAxiosSecure'
 import { useParams } from 'react-router-dom'
 import LoadingSpinner from '../../components/Shared/LoadingSpinner'
+import { axiosCommon } from '../../hooks/useAxiosCommon'
 
 // single room object (Fake Data)
 // const room = {
@@ -41,7 +42,7 @@ const RoomDetails = () => {
   const { data: room = {}, isLoading } = useQuery({
   queryKey: ['room'],
   queryFn: async() => {
-    const { data } = await axiosSecure.get(`/room/${id}`);
+    const { data } = await axiosCommon.get(`/room/${id}`);
     return data;
   }
 })
