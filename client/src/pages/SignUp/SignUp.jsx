@@ -1,7 +1,35 @@
 import { Link } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
+import axios from "axios";
 
 const SignUp = () => {
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const image = form.image.files[0];
+    const formData = new FormData();
+    formData.append('image', image)
+  
+
+    try {
+      // 1. Upload image in img bb
+      const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG_BB_ApiKey}`, formData)
+    
+      console.log(data.data.display_url);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+    
+  }
+
+
   return (
     <div className='flex justify-center items-center min-h-screen'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
@@ -10,9 +38,10 @@ const SignUp = () => {
           <p className='text-sm text-gray-400'>Welcome to StayVista</p>
         </div>
         <form
+          onSubmit={handleSubmit}
           noValidate=''
           action=''
-          className='space-y-6 ng-untouched ng-pristine ng-valid'
+          className='space-y-6'
         >
           <div className='space-y-4'>
             <div>
