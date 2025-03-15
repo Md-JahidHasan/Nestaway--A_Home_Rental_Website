@@ -1,8 +1,16 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import axios from "axios";
+import useAuth from '../../hooks/useAuth';
+import { ToastContainer, toast } from 'react-toast'
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const SignUp = () => {
+
+  const { createUser, updateUserProfile, loading, setLoading, signInWithGoogle } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location?.state || '/';
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -17,9 +25,22 @@ const SignUp = () => {
 
     try {
       // 1. Upload image in img bb
+      setLoading(true)
       const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG_BB_ApiKey}`, formData)
     
       console.log(data.data.display_url);
+
+      // 2. User registration 
+      const  result  = await createUser(email, password)
+      console.log("result of create user", result);
+
+      await updateUserProfile(name, data.data.display_url)
+
+      navigate(from);
+      toast.success('Sigup Successful!')
+
+
+      
       
     } catch (error) {
       console.log(error);
@@ -27,6 +48,20 @@ const SignUp = () => {
     }
     
     
+  }
+
+  const handleGoogleSighup = async () => {
+    setLoading(true)
+    try {
+      await signInWithGoogle()
+      navigate(from);
+      toast.success('Sigup Successful!')
+
+
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
 
@@ -104,11 +139,13 @@ const SignUp = () => {
           <div>
             <button
               type='submit'
+              disabled={loading}
               className='bg-rose-500 w-full rounded-md py-3 text-white'
             >
-              Continue
+              {loading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Continue'}
             </button>
           </div>
+           <ToastContainer></ToastContainer>
         </form>
         <div className='flex items-center pt-4 space-x-1'>
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
@@ -117,11 +154,13 @@ const SignUp = () => {
           </p>
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
         </div>
-        <div className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+
+
+        <button onClick={handleGoogleSighup} disabled={loading} className=' disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>
-        </div>
+        </button>
         <p className='px-6 text-sm text-center text-gray-400'>
           Already have an account?{' '}
           <Link
