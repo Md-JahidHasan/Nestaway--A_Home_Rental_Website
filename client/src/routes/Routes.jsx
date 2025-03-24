@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
         element: <MyListings></MyListings>,
       },
       {
-        path: 'statistics',
+        index: true,
         element: <Statistics></Statistics>
       }
     ]

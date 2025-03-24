@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AddRoomForm from '../../../components/Forms/AddRoomForm';
 
 const AddRoom = () => {
+
+    const [dates, setDates] = useState({
+        startDate: new Date(),
+        endDate: null,
+        key: 'selection'
+    })
+
+    const handleDates = range => {
+        console.log(range);
+        
+        setDates(range.selection)
+    }
+
+
     return (
         <div>
-            <h1>Add Room Page...</h1>
+            <AddRoomForm dates={dates} handleDates={handleDates}></AddRoomForm>
         </div>
     );
 };
