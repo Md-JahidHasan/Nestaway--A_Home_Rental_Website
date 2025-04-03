@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AddRoomForm from '../../../components/Forms/AddRoomForm';
 
 const AddRoom = () => {
@@ -16,9 +16,13 @@ const AddRoom = () => {
     }
 
 
+    const handleSubmit = e => {
+        e.preventDefault();
+    }
+
     return (
         <div>
-            <AddRoomForm dates={dates} handleDates={handleDates}></AddRoomForm>
+            <AddRoomForm dates={dates} handleDates={handleDates} handleSubmit={handleSubmit} ></AddRoomForm>
         </div>
     );
 };
