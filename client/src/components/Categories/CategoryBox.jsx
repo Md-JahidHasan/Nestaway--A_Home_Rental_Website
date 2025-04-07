@@ -16,7 +16,7 @@ const CategoryBox = ({ label, icon: Icon }) => {
     navigate(url)
     
   }
-  console.log(category===label);
+  // console.log(category===label);
   
   
   return (

@@ -1,11 +1,12 @@
 // import { useState } from 'react';
+import { TbFidgetSpinner } from 'react-icons/tb';
 import { categories } from '../Categories/CategoriesData'
 import { DateRange } from 'react-date-range';
 
 
 
 
-const AddRoomForm = ({dates, handleDates, handleSubmit}) => {
+const AddRoomForm = ({dates, handleDates, handleSubmit, imagePreview, imageText, handleImagePreview, loading}) => {
 
   //   const [state, setState] = useState([
   //   {
@@ -21,6 +22,7 @@ const AddRoomForm = ({dates, handleDates, handleSubmit}) => {
       <form onSubmit={handleSubmit}>
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
           <div className='space-y-6'>
+            
             <div className='space-y-1 text-sm'>
               <label htmlFor='location' className='block text-gray-600'>
                 Location
@@ -82,11 +84,13 @@ const AddRoomForm = ({dates, handleDates, handleSubmit}) => {
               />
             </div>
 
-            <div className=' p-4 bg-white w-full  m-auto rounded-lg'>
+            <div className=' p-4 bg-white w-full  m-auto rounded-lg flex justify-between'>
               <div className='file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg'>
+                
                 <div className='flex flex-col w-max mx-auto text-center'>
                   <label>
                     <input
+                      onChange={e=>handleImagePreview(e.target.files[0])}
                       className='text-sm cursor-pointer w-36 hidden'
                       type='file'
                       name='image'
@@ -95,11 +99,14 @@ const AddRoomForm = ({dates, handleDates, handleSubmit}) => {
                       hidden
                     />
                     <div className='bg-rose-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-rose-500'>
-                      Upload Image
+                      {imageText.length > 15 ? imageText.split('.')[0].slice(1, 15)+'....'+imageText.split('.')[1] : imageText}
                     </div>
                   </label>
                 </div>
               </div>
+              <div className='h-16 w-16 object-cover bg-red-500 flex items-center mx-2'>
+                  {imagePreview && <img src={imagePreview} alt=""  />}
+                </div>
             </div>
             <div className='flex justify-between gap-2'>
               <div className='space-y-1 text-sm'>
@@ -179,7 +186,9 @@ const AddRoomForm = ({dates, handleDates, handleSubmit}) => {
           type='submit'
           className='w-full p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-rose-500'
         >
-          Save & Continue
+          
+
+          {loading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Save & Continue'}
         </button>
       </form>
     </div>
