@@ -11,6 +11,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import { ToastContainer } from 'react-toast'
 
 const queryClient = new QueryClient()
 
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <RouterProvider router={router} />
         <Toaster />
+        <ToastContainer />
       </AuthProvider>
     </QueryClientProvider>
   </HelmetProvider>

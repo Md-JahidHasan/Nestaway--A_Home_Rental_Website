@@ -14,7 +14,7 @@ const Rooms = () => {
   const [params, setParams] = useSearchParams();
   const category = params.get('category');
 
-  const { data: rooms, isLoading } = useQuery({
+  const { data: rooms, isLoading} = useQuery({
     queryKey: ['rooms', category],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/rooms?category=${category}`);
@@ -22,6 +22,9 @@ const Rooms = () => {
     }
   })
 
+  console.log(rooms);
+  
+  
   // useEffect(() => {
   //   setLoading(true)
   //   fetch(`http://localhost:8000/rooms`)

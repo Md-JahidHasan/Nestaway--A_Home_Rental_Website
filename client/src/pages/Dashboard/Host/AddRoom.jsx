@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet-async'
 import { useMutation } from '@tanstack/react-query'
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toast';
 
 
 const AddRoom = () => {
@@ -39,7 +40,15 @@ const AddRoom = () => {
         onSuccess: () => {
             console.log('Room Added Successsfully!');
             setLoading(false)
-            // navigate('/my-listings')
+            toast.success('Room Added Successsfully!', {
+                position: "top-center",
+                autoClose: 100,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+
+                })
+            navigate('/dashboard/my-listings')
         }
    })
 
