@@ -4,12 +4,16 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import RoomDataRow from '../../../components/TableRows/RoomDataRow';
 import Heading from '../../../components/Shared/Heading';
+import { useState } from 'react';
+
 
 const MyListings = () => {
 
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure()
+    let [isOpen, setIsOpen] = useState(false)
 
+    // room data fetch
     const { data:rooms, isLoading, refetch } = useQuery({
         queryKey: ['my-listings', user?.email],
         queryFn: async () => {
@@ -81,8 +85,11 @@ const MyListings = () => {
                 <tbody>
                      {/* Room row data */}
                                   
-                    {
-                        rooms && rooms.length > 0 ? rooms.map(room => <RoomDataRow
+                    
+                    
+                                  {
+                                     
+                                      rooms && rooms.length > 0 ? rooms.map(room => <RoomDataRow
                                    key={room?.id}
                                     room={room}
                                     refetch={refetch}
@@ -95,6 +102,7 @@ const MyListings = () => {
           />
         </div>
       )
+                                      
                     }
                 </tbody>
               </table>
