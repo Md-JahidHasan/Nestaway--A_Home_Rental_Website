@@ -1,17 +1,19 @@
 import { Helmet } from 'react-helmet-async'
 import useAuth from '../../../hooks/useAuth'
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import RoomDataRow from '../../../components/TableRows/RoomDataRow';
 import Heading from '../../../components/Shared/Heading';
 import { useState } from 'react';
+import { axiosCommon } from '../../../hooks/useAxiosCommon';
+import { toast } from 'react-toast';
 
 
 const MyListings = () => {
 
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure()
-    let [isOpen, setIsOpen] = useState(false)
+    // let [isOpen, setIsOpen] = useState(false)
 
     // room data fetch
     const { data:rooms, isLoading, refetch } = useQuery({
@@ -22,8 +24,31 @@ const MyListings = () => {
         }
     })
 
+  
+  const { mutateAsync } = useMutation({
+    mutationFn: async id => {
+      const { data } = await axiosSecure.delete(`/room/${id}`);
+      return data
+    }
+  })
 
-    console.log(user?.email, rooms);
+  // handle delete room
+  const handleDelete =  async (id) => {
+    console.log(id);
+    try {
+      await mutateAsync(id)
+      toast.success(`Deleted successfully!`, {
+        position: "top-center",
+        autoClose: 10,
+        
+      })
+      refetch()
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+  }
 
   return (
     <>
@@ -89,10 +114,11 @@ const MyListings = () => {
                     
                                   {
                                      
-                                      rooms && rooms.length > 0 ? rooms.map(room => <RoomDataRow
-                                   key={room?.id}
+                                    rooms && rooms.length > 0 ? rooms.map(room => <RoomDataRow
+                                   key={room?._id}
                                     room={room}
-                                    refetch={refetch}
+                                        refetch={refetch}
+                                        handleDelete={handleDelete}
                                 ></RoomDataRow>) : (
         <div className='flex items-center justify-center min-h-[calc(100vh-300px)]'>
           <Heading

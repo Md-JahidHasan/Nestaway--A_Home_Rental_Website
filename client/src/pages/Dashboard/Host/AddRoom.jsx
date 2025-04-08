@@ -40,14 +40,7 @@ const AddRoom = () => {
         onSuccess: () => {
             console.log('Room Added Successsfully!');
             setLoading(false)
-            toast.success('Room Added Successsfully!', {
-                position: "top-center",
-                autoClose: 100,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-
-                })
+            toast('Room Added Successsfully!')
             navigate('/dashboard/my-listings')
         }
    })

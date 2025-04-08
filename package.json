@@ -2,6 +2,7 @@
   "dependencies": {
     "@headlessui/react": "^2.2.1",
     "@tanstack/react-query": "^5.71.10",
+    "date-fns": "^4.1.0",
     "react-toastify": "^11.0.5"
   }
 }

@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { useState } from 'react'
 import DeleteModal from '../modal/DeleteModal'
 
-const RoomDataRow = ({ room, refetch }) => {
+const RoomDataRow = ({ room, refetch, handleDelete }) => {
 
   // Delete modal
   let [isOpen, setIsOpen] = useState(false)
@@ -58,7 +58,7 @@ const RoomDataRow = ({ room, refetch }) => {
           <span className='relative'>Delete</span>
         </button>
         {/* Delete modal */}
-        <DeleteModal isOpen={isOpen} closeModal={closeModal}></DeleteModal>
+        <DeleteModal isOpen={isOpen} closeModal={closeModal} handleDelete={handleDelete} id={room?._id}></DeleteModal>
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <span className='relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight'>

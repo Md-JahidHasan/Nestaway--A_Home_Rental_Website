@@ -3,7 +3,7 @@ const app = express()
 require('dotenv').config()
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb')
+const { MongoClient, ServerApiVersion, ObjectId, Timestamp } = require('mongodb')
 const jwt = require('jsonwebtoken')
 
 const port = process.env.PORT || 8000
@@ -51,6 +51,7 @@ async function run() {
   try {
 
     const roomsCollection = client.db('NestAway').collection('rooms');
+    const usersCollection = client.db('NestAway').collection('users');
 
 
 
@@ -68,6 +69,8 @@ async function run() {
         })
         .send({ success: true })
     })
+
+
     // Logout
     app.get('/logout', async (req, res) => {
       try {
@@ -84,6 +87,26 @@ async function run() {
       }
     })
 
+    // save a user data to database
+    app.put('/user', async (req, res) => {
+
+      // save a user
+      const user = req.body;
+      const options = { upsert: true }
+      const query = {
+        email: user?.email
+      }
+
+      const updatedDoc = {
+        $set: {
+          ...user,
+          timestamp: Date.now()
+        }
+      }
+      const result = await usersCollection.updateOne(query, updatedDoc, options);
+      res.send(result)
+    })
+
 
     // get all rooms from database
     app.get('/rooms', async (req, res) => {
@@ -96,6 +119,7 @@ async function run() {
       res.send(result)
     })
 
+
     // get room details from database
     app.get('/room/:id', async (req, res) => {
       const id = req.params.id;
@@ -105,6 +129,7 @@ async function run() {
       const result = await roomsCollection.findOne(query);
       res.send(result);
     })
+
 
     // get my listings - hosts room list
     app.get('/my-listings/:email', async (req, res) => {
@@ -118,12 +143,27 @@ async function run() {
       res.send(result)
     })
 
+
     // add room to the database
     app.post('/room', async (req, res) => {
       const roomData = req.body;
       const result = await roomsCollection.insertOne(roomData);
       res.send(result);
     })
+
+
+    // delete room from database
+    app.delete('/room/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id)
+      }
+      const result = await roomsCollection.deleteOne(query);
+      res.send(result);
+    })
+
+
+
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 })
