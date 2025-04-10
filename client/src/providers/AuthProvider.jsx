@@ -72,7 +72,7 @@ const AuthProvider = ({ children }) => {
       role: 'guest',
       status: 'verified'
     }
-    const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/users`, userData);
+    const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/user`, userData);
     return data;
   }
 
@@ -83,7 +83,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         getToken(currentUser.email)
         saveUser(currentUser)
-        console.log(currentUser);
+        
         
       }
       setLoading(false)

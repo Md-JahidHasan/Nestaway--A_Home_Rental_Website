@@ -90,13 +90,30 @@ async function run() {
     // save a user data to database
     app.put('/user', async (req, res) => {
 
-      // save a user
       const user = req.body;
-      const options = { upsert: true }
       const query = {
         email: user?.email
       }
 
+      // check if users exist
+      const isExist = await usersCollection.findOne(query)
+      if (isExist) {
+        if (user?.status === 'requested') {
+          const result = await usersCollection.updateOne(query, {
+            $set: {
+              status: user?.status
+            },
+          })
+          return res.send(result)
+
+        } else {
+          return res.send(isExist)
+        }
+      }
+      
+      
+      // save a user     
+      const options = { upsert: true }
       const updatedDoc = {
         $set: {
           ...user,
@@ -106,6 +123,14 @@ async function run() {
       const result = await usersCollection.updateOne(query, updatedDoc, options);
       res.send(result)
     })
+    
+
+    // get all users data from db
+    app.get('/users', async (req, res) => {
+      const query = {};
+      const result = await usersCollection.find(query).toArray();
+      res.send(result);
+     })
 
 
     // get all rooms from database
