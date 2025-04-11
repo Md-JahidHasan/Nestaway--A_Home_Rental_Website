@@ -26,14 +26,14 @@ const Navbar = () => {
 
   const handleModal = async() => {
     console.log('I want to be host');
-toast.success("Success! Wait for admin confirmation...")
+
     try {
-      const userData = {
-      email: user.email,
-      role: 'guest',
-      status: 'requested'
-    }
-    const { data } = await axiosSecure.put(`${import.meta.env.VITE_API_URL}/user`, userData);
+      const currentUserData = {
+        email: user.email,
+        role: 'guest',
+        status: 'requested'
+      }
+    const { data } = await axiosSecure.put(`/user`, currentUserData);
       console.log(data);
       if (data.modifiedCount > 0) {
         toast.success("Success! Wait for admin confirmation...")

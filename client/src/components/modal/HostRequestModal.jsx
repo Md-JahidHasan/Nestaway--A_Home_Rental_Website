@@ -76,7 +76,8 @@ const HostModal = ({ closeModal, isOpen, handleModal }) => {
 
 HostModal.propTypes = {
   closeModal: PropTypes.func,
-  isOpen: PropTypes.bool,
+    isOpen: PropTypes.bool,
+  handleModal: PropTypes.func
 }
 
 export default HostModal
