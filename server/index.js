@@ -110,7 +110,7 @@ async function run() {
           return res.send(isExist)
         }
       }
-      
+
       
       // save a user     
       const options = { upsert: true }
@@ -132,6 +132,15 @@ async function run() {
       res.send(result);
      })
 
+    
+     // get user by mail
+      app.get('/users/:email', async (req, res) => {
+        const email = req.params.email;
+        
+        const result = await usersCollection.findOne({ 'email': email });
+        res.send(result);
+      })
+      
 
     // get all rooms from database
     app.get('/rooms', async (req, res) => {
