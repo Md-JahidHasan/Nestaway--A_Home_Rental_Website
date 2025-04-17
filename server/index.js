@@ -132,6 +132,19 @@ async function run() {
       res.send(result);
      })
 
+    // update user role
+    app.patch('/users/update/:email', async (req, res) => {
+      const email = req.params.email;
+      const user = req.body;
+      const query = { email };
+      const updatedDoc = {
+        $set: {
+          ...user, timestamp: Date.now()
+        }
+      }
+      const result = await usersCollection.updateOne(query, updatedDoc);
+      res.send(result);
+    })
     
      // get user by mail
       app.get('/users/:email', async (req, res) => {
