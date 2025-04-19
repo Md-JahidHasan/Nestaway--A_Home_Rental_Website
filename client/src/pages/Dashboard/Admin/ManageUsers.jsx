@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import UserDataRow from '../../../components/TableRows/UserDataRow'
-import useAuth from '../../../hooks/useAuth'
+
 import useAxiosSecure from '../../../hooks/useAxiosSecure'
 import { useQuery } from '@tanstack/react-query'
 import LoadingSpinner from '../../../components/Shared/LoadingSpinner'

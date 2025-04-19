@@ -2,9 +2,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import axios from "axios";
 import useAuth from '../../hooks/useAuth';
-import { ToastContainer, toast } from 'react-toast'
+
 import { TbFidgetSpinner } from "react-icons/tb";
 import { imageUpload } from '../../api/utils';
+import toast from 'react-hot-toast';
+
 
 const SignUp = () => {
 
@@ -146,7 +148,7 @@ const SignUp = () => {
               {loading ? <TbFidgetSpinner className='animate-spin m-auto' /> : 'Continue'}
             </button>
           </div>
-           <ToastContainer></ToastContainer>
+           {/* <ToastContainer></ToastContainer> */}
         </form>
         <div className='flex items-center pt-4 space-x-1'>
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>

@@ -53,6 +53,35 @@ async function run() {
     const roomsCollection = client.db('NestAway').collection('rooms');
     const usersCollection = client.db('NestAway').collection('users');
 
+    // verify admin middleware
+    const verifyAdmin = async (req, res, next) => {
+
+      const user = req.user;
+      const query = { email: user?.email };
+      
+      
+      const result = await usersCollection.findOne(query);
+      if (!result || result.role !== 'admin')
+        return res.status(401).send({ message: 'Unauthorised Access' })
+      // console.log(result.role);
+      
+      next()
+
+    }
+
+    // verify host middleware
+    const verifyHost = async (req, res, next) => {
+      const user = req.user;
+      const query = {
+        email: user?.email
+      }
+      const result = await usersCollection.findOne(query)
+      if (!result || result.role !== 'host')
+        return req.status(401).send({ message: 'Unauthorised access!'})
+        
+
+      next()
+    }
 
 
     // auth related api
@@ -126,7 +155,7 @@ async function run() {
     
 
     // get all users data from db
-    app.get('/users', async (req, res) => {
+    app.get('/users', verifyToken, verifyAdmin, async (req, res) => {
       const query = {};
       const result = await usersCollection.find(query).toArray();
       res.send(result);
@@ -179,7 +208,7 @@ async function run() {
 
 
     // get my listings - hosts room list
-    app.get('/my-listings/:email', async (req, res) => {
+    app.get('/my-listings/:email', verifyToken, verifyHost, async (req, res) => {
       const email = req.params.email;
       let query = {
         'host.email': email
@@ -192,7 +221,7 @@ async function run() {
 
 
     // add room to the database
-    app.post('/room', async (req, res) => {
+    app.post('/room', verifyToken, verifyHost, async (req, res) => {
       const roomData = req.body;
       const result = await roomsCollection.insertOne(roomData);
       res.send(result);
