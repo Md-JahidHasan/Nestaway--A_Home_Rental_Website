@@ -20,8 +20,15 @@ const Sidebar = () => {
   const { logOut } = useAuth()
   const [isActive, setActive] = useState(false)
   const [role] = useRole()
-  console.log(role);
+  // console.log(role);
   
+  const [toggle, setToggle] = useState(false)
+
+  const toggleHandler = (e) => {
+    setToggle(!toggle)
+    console.log(e.target.checked);
+    
+  }
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -77,7 +84,7 @@ const Sidebar = () => {
           {/* Nav Items */}
           <div className='flex flex-col justify-between flex-1 mt-6'>
             {/* Conditional toggle button here.. */}
-            {role=== 'host' && <ToggleBtn></ToggleBtn>}
+            {role=== 'host' && <ToggleBtn toggleHandler={toggleHandler} toggle={toggle}></ToggleBtn>}
 
             {/*  Menu Items */}
             <nav>
@@ -86,7 +93,7 @@ const Sidebar = () => {
               <MenuItem label='Statistics' icon={BsGraphUp} address={'/dashboard'}></MenuItem>
 
                 {role === 'guest' && <GuestMenu></GuestMenu>}
-                {role === 'host' && <HostMenu></HostMenu>}
+                {role === 'host' ? toggle ? <HostMenu></HostMenu> : <GuestMenu></GuestMenu> : undefined}
                 { role === 'admin' && <AdminMenu></AdminMenu>} 
             </nav>
           </div>
