@@ -102,7 +102,7 @@ const Sidebar = () => {
         <div>
           <hr />
 
-          {/* Profile Menu */}
+          {/* Profile Menu===== */}
           <MenuItem address={'/dashboard/profile'} label={'Profile'} icon={FcSettings}></MenuItem>
 
           <button
