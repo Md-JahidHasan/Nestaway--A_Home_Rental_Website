@@ -3,10 +3,12 @@
 
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "./CheckoutForm.css";
+import { useState } from "react";
 
 const CheckoutForm = ({closeModal , bookingInfo}) => {
   const stripe = useStripe();
-  const elements = useElements();
+    const elements = useElements();
+    const [clientSecret, setClientSecret] = useState("");
 
   const handleSubmit = async (event) => {
     // Block native form submission.
@@ -58,9 +60,7 @@ const CheckoutForm = ({closeModal , bookingInfo}) => {
           },
         }}
       />
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
+     
       <div className="flex mt-2 justify-around">
         <button
           type="button"
@@ -73,7 +73,7 @@ const CheckoutForm = ({closeModal , bookingInfo}) => {
           className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
           onClick={closeModal}
         >
-          No
+            Cancel
         </button>
       </div>
     </form>
