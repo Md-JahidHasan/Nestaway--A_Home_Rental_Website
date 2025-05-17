@@ -198,6 +198,8 @@ async function run() {
     });
 
     // get all rooms from database
+
+    // |||
     app.get("/rooms", async (req, res) => {
       let query = {};
       const category = req.query.category;
